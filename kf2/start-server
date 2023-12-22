@@ -3,11 +3,13 @@
 #====================================
 # Variables
 #====================================
+SERVER_MANAGER_HOME=${SERVER_MANAGER_HOME:-~/kf2-server-manager}
+
 Game="kf2"
 DefaultMap="kf-bioticssslab" # Default map
 Map="${DefaultMap}" # Tracks the user set map for server start
 MapList=()
-mapfile -t MapList < ~/kf2/maps.txt
+mapfile -t MapList < $SERVER_MANAGER_HOME/kf2/maps.txt
 GameMode="" # Game mode to set -- is blank for Survival mode.
 GameModeList=(
   "survival"
@@ -89,7 +91,7 @@ while test $# -gt 0; do
 done
 
 # Check stuff first...
-all_systems_go=$(~/steam-systems-check)
+all_systems_go=$($SERVER_MANAGER_HOME/steam-systems-check)
 
 if [ "$?" != "0" ]; then
   echo "$all_systems_go";
