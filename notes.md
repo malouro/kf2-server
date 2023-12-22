@@ -1,3 +1,5 @@
+> These are personal notes I had for my own EC2 instance setup for running the server...
+
 # Common Issues
 
 ## EC2 Instance Hanging?
@@ -12,7 +14,7 @@ This is a quick video tutorial I followed to set things up:
 To debug, check the following:
 
 - **Volume is attached to the EC2 instance.**
-- **Systems checks passes.** (see `~/steam-systems-check` -- which checks for the following:)
+- **Systems checks passes.** (see `steam-systems-check` -- which checks for the following:)
   - Device exists, which confirms (1)
   - Volume is formatted for the expected device name
   - Volume is mounted at an expected location (ie: `/mnt/<volume-name>` directory)
