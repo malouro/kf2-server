@@ -32,4 +32,4 @@ fi
 echo ""
 echo "Updating KF2 for Steam..."
 
-steamcmd +runscript $SERVER_MANAGER_HOME/update.steam-script.txt
+steamcmd +runscript $SERVER_MANAGER_HOME/kf2/update.steam-script.txt
