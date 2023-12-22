@@ -1,0 +1,102 @@
+#!/bin/bash
+
+#====================================
+# Variables
+#====================================
+Game="kf2"
+DefaultMap="kf-bioticssslab" # Default map
+Map="${DefaultMap}" # Tracks the user set map for server start
+MapList=()
+mapfile -t MapList < ~/kf2/maps.txt
+GameMode="" # Game mode to set -- is blank for Survival mode.
+GameModeList=(
+  "survival"
+  "versus"
+  "weekly"
+  "endless"
+)
+
+while test $# -gt 0; do
+  case "$1" in
+    -h|--help)
+      echo "Usage:";
+      echo "    ~/$Game/start-server [...flags]"
+      echo ""
+      printf "\u001b[33m  Flag                Value(s)              Description\u001b[0m\n";
+      printf "|===================|=====================|=============\n";
+      printf "\u001b[34m  -m, --map \u001b[0m          See ~/kf2/maps.txt    Map to start server on.\n\n";
+      printf "\u001b[34m  -g, --game-mode \u001b[0m    - survival            Game mode to start server on.\n";
+      printf "                      - versus              Check ~/kf2/modes.txt for more info.\n";
+      printf "                      - weekly             \n";
+      printf "                      - endless            \n\n";
+      exit 0
+      ;;
+    -m|--map)
+      shift
+      if test $# -gt 0; then
+        Map="$1"
+      else
+        echo "No map value specified."
+        exit 1
+      fi
+      shift
+
+      map_exists=false
+
+      for check_map in "${MapList[@]}"; do
+        if [[ "$(echo $Map | awk '{print tolower($0)}')" = "$(echo $check_map | awk '{print tolower($0)}')" ]]; then
+          map_exists=true
+        fi
+      done
+
+      if [ "$map_exists" = false ]; then
+        echo "Map selection of '$Map' is not valid."
+        echo "Check the maplist:"
+        echo "${MapList[@]}"
+        exit 1
+      fi
+      ;;
+    -g|--game-mode)
+      shift
+      if test $# -gt 0; then
+        case "$1" in
+          survival)
+            GameMode=""
+            ;;
+          versus)
+            GameMode="?Game=KFGameContent.KFGameInfo_VersusSurvival?maxplayers=12"
+            ;;
+          weekly)
+            GameMode="?Game=KFGameContent.KFGameInfo_WeeklySurvival"
+            ;;
+          endless)
+            GameMode="?Game=KFGameContent.KFGameInfo_Endless"
+            ;;
+          *)
+            echo "GameMode \"$1\" is an invalid game mode option. Must be one of ${GameModeList[*]}"
+            exit 1
+        esac
+      else
+        echo "No game mode specified."
+        exit 1
+      fi
+      shift
+      ;;
+    *)
+      break
+      ;;
+  esac
+done
+
+# Check stuff first...
+all_systems_go=$(~/steam-systems-check)
+
+if [ "$?" != "0" ]; then
+  echo "$all_systems_go";
+  echo "Systems check failed; check above logs.";
+  exit 1;
+fi
+
+# Run Server
+~/Steam/steamapps/common/kf2server/Binaries/Win64/KFGameSteamServer.bin.x86_64 ${Map}${GameMode}
+

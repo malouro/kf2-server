@@ -1,0 +1,68 @@
+#!/bin/bash
+
+#====================================
+# Usage:
+#   bash ~/steam-systems-check
+#
+# Notes:
+# - Exit code of `1` if any system check fails.
+# - Exit code of `0` if all is well.
+# - Error message should show appropriate measures to fix.
+# - Use this script before any server start command for Steam games
+#   (e.g.: Check the ~/kf2/start-server script)
+#
+# Reference:
+# - YouTube video that shows some steps that are taken for setup:
+#   https://www.youtube.com/watch?v=VnO3Lz7Qr0U
+#====================================
+
+# VARIABLES
+#====================================
+# this would be different if the volume device name is different in EC2 config
+VOLUME_NAME="${VOLUME_NAME:-xvdf}"
+# this can be wherever you want, but I like using a root /mnt/ directory
+MOUNT_DIR="${MOUNT_DIR:-/mnt/Games}"
+
+# CONDITIONS
+#====================================
+# Does the expected device exist?
+device_exists=$(lsblk | grep $VOLUME_NAME)
+# Is the expected device a formatted volume? (let's expect XFS volume)
+volume_formatted=$(file -s /dev/$VOLUME_NAME | grep 'XFS filesystem')
+
+# SYSTEMS CHECK
+#====================================
+if [ -z device_exists ]; then
+  echo "Device not detected: '$VOLUME_NAME'";
+  echo "Check that the volume is running and attached to the EC2 instance with the expected name.";
+  exit 1;
+fi
+
+if [ -z volume_formatted ]; then
+  echo "Detected volume '$VOLUME_NAME' is not formatted.";
+  echo "Either something is wrong with volume, or it's new and needs to be formatted.";
+  printf "\nYou can use the following:\n\n";
+  printf "    mkfs -t xfs /dev/$VOLUME_NAME\n\n";
+  printf "to format the volume.\n";
+  exit 1;
+fi
+
+if df $MOUNT_DIR | grep -q "/dev/${VOLUME_NAME} "; then
+  echo "Volume '$VOLUME_NAME' is mounted at '$MOUNT_DIR'. ✅";
+
+  if readlink ~/Steam | grep -q $MOUNT_DIR; then
+    echo "Path '~/Steam' is linked to '$MOUNT_DIR/Steam'. ✅";
+    echo "All systems GO! 😎👍";
+    exit 0;
+  else
+    echo "Path '~/Steam' is NOT linked to '$MOUNT_DIR/Steam'. ❌";
+    exit 1;
+  fi
+
+else
+  echo "Volume '$VOLUME_NAME' is NOT mounted at '$MOUNT_DIR'. ❌";
+  printf "\nYou can use the following:\n\n";
+  printf "    mount /dev/$VOLUME_NAME $MOUNT_DIR\n\n";
+  printf "to mount the volume. (NOTE: Probably need to run as super user)\n";
+  exit 1;
+fi

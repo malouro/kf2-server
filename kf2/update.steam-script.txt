@@ -1,0 +1,4 @@
+force_install_dir /apps/data/volumes/new-volume/games/
+login anonymous
+app_update 232130 validate
+quit

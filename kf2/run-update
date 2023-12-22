@@ -1,0 +1,35 @@
+#!/bin/bash
+
+SERVER_MANAGER_HOME=${SERVER_MANAGER_HOME:-~/kf2-server-manager}
+
+Config=$(cat ~/Steam/steamapps/common/kf2server/KFGame/Config/LinuxServer-KFGame.ini)
+
+echo "Updating map list..."
+echo ""
+echo "NOTE: This uses the GameMapCycles config defined in KFGame.ini"
+echo "Keep that file up to date with the servers you want on the server."
+echo ""
+
+if [[ $Config =~ GameMapCycles=\(Maps=\((.*)\)\) ]]; then
+  path="$(dirname "$0")"
+  maps_file="$path/maps.txt"
+  maps="${BASH_REMATCH[1]}"
+  echo "Maps list:"
+  echo $maps
+  echo ""
+
+  maps=$(echo $maps | sed -r 's/["]+//g')
+  maps=(${maps//,/ })
+
+  > $maps_file
+  for map in "${maps[@]}"; do
+    echo $map >> $maps_file
+  done
+
+  echo "Updated map list! ✅"
+fi
+
+echo ""
+echo "Updating KF2 for Steam..."
+
+steamcmd +runscript $SERVER_MANAGER_HOME/update.steam-script.txt
