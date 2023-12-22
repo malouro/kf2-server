@@ -65,6 +65,8 @@ Use `start-server --help` for usage info.
 | `-m,--map` `<map>` | Choose the map to set on server start. Default is `kf-bioticslab`. | Look at maps in `[KFGame.KFGameInfo].GameMapCycles` in `KFGame.ini` |
 | `--game-mode` `<mode>` | Choose the game mode on server start. Default is `survival`. | `survival`, `versus`, `weekly`, `endless` |
 
+> NOTE: There is an (optional) systems check script that runs before startup of the server. This is more specific to my personal setup of the server, and can be disabled via `SYSTEM_CHECKS_ENABLED=false`.
+
 ## Configuration
 
 In `~/Steam/steamapps/common/kf2server/KFGame/Config/` exists multiple `*.ini` config files:
@@ -76,7 +78,7 @@ In `~/Steam/steamapps/common/kf2server/KFGame/Config/` exists multiple `*.ini` c
 - `KFWeb.ini`
   - Web admin config options
 
-NOTE: The real names of the above config files will have a prepended system name. (ie: `Linux`/`Windows`)
+> NOTE: The real names of the above config files will have a prepended system name. (ie: `Linux`/`Windows`)
 
 ### Map List
 
