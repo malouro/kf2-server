@@ -2,28 +2,31 @@
 
 This is (was) a setup of code running on a (free-tier) EC2 AWS instance, to setup and manage a Killing Floor 2 server.
 
-One of the biggest issues I (and some of my friends) have had with playing KF2 has been finding the *perfect* server to play on. Using the server browser to find a map that meets *all* of the criteria you wanted was a chore at best and an impossibility at worst. Basically, out of the following categories, pick only two or three - as we probably won't find a server that matches more:
+One of the biggest issues I (and some of my friends) have had with playing KF2 has been finding the *perfect* server to play on. Using the server browser to find a map that meets *all* of the criteria you wanted was a chore at best and an impossibility at worst.
 
-- Map + mode (and to make matters more complicated: custom maps)
-- Player count
-- Difficulty setting
+The following categories are things we considered when finding a server, and would be lucky to find even just 3 matching criteria:
+
+- Map/game mode (and to make matters more complicated: custom maps)
+- Max player count
+- Difficulty (normal, hard, etc.)
 - Map length (short, medium, long)
-- Server location, connection, and ping for all the people that want to play
-- Friends-only, no random joiners (depending on what we want at the time)
+- Server location, and ping, for all the people that want to play
+- Password protection (for the sake of friends-only, if we didn't want to be bothered by random joiners)
 
-The solution seemed to be as simple as running our own server. :^)
+The last criteria alone is pretty impossible via just the in-game server browser, so it seemed like hosting our own server would be the best overall solution.
 
-I initially ran this on an EC2 instance, but you could run this locally or in any of your preferred cloud computing solutions - whatever you want.
-
-NOTE: For EC2, you might have to, unfortunately, either go above a free-tier to get an instance with enough drive space to download/install KF2, or open an extra volume and attach it to your free-tiered EC2.
+> NOTE:
+> 
+> I initially ran this on an EC2 instance, but you could run this locally or in any of your preferred cloud computing solutions - whatever you want.
+> For EC2, you might have to, unfortunately, either go above a free-tier to get an instance with enough drive space to download KF2 onto, or open an extra volume and attach it to your free-tiered EC2. (which will probably increase the cost as well)
 
 ## Getting Started
 
 This assumes a couple of things:
 
-1. You have SteamCmd installed for Linux.
+1. You have `steamcmd` installed for Linux.
 2. Your Steam installations are hooked up to `~/Steam/`.
-3. You've cloned this repo into your HOME directory. (`~`)
+3. You've cloned this repo into your `$HOME` directory. (`~`)
 4. The `./kf2/update.steam-script.txt` file has the first line modified to point to where you want to install KF2. (you can symlink `~/Steam/` to this location later if needed)
 
 ```bash
@@ -37,13 +40,14 @@ sudo apt install steamcmd
 ```
 
 If the location for this repo is NOT `~/kf2-server-manager`, you need to run the above server scripts with the env variable `SERVER_MANAGER_HOME` set to your preferred location.
+This value is `~/kf2-server-manager/kf2` by default.
 
 ## Running the Server
 
 Simply run:
 
 ```bash
-~/kf2-server-manager/kf2/start-server
+$SERVER_MANAGER_HOME/start-server
 ```
 
 Which runs the KF2 Linux executable at `~/Steam/steamapps/common/kf2server/Binaries/Win64/KFGameSteamServer.bin.x86_64`.
@@ -76,7 +80,7 @@ NOTE: The real names of the above config files will have a prepended system name
 
 ### Map List
 
-The `start-server` script depends on an existing `maps.txt` file within `$SERVER_MANAGER_HOME/kf2/` to display available within the CLI help menu, and to more importantly populate the initial map rotation list for the server on startup.
+The `start-server` script depends on an existing `maps.txt` file within `$SERVER_MANAGER_HOME` to display available within the CLI help menu, and to more importantly populate the initial map rotation list for the server on startup.
 
 The map names need to follow the `KF-<name>` convention that matches the ID of the map. You can find this manually by navigating to `<steam-installation>/kf2server/KFGame/BrewedPC/Maps/<map-name>` and looking for a correspdoning `$MAP_ID.kfm` file (will usually follow the pattern of `KF-<MAP>.kfm`, ie: `KF-BioticsLab.kfm`).
 
@@ -95,7 +99,7 @@ Additionally, the map name needs to be added into `maps.txt` mentioned above.
 ## Updating
 
 ```bash
-~/kf2-server-manager/kf2/run-update
+$SERVER_MANAGER_HOME/run-update
 ```
 
 ## Resources
