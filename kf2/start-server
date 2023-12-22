@@ -4,6 +4,7 @@
 # Variables
 #====================================
 SERVER_MANAGER_HOME=${SERVER_MANAGER_HOME:-~/kf2-server-manager}
+SYSTEMS_CHECK_ENABLED=${SYSTEMS_CHECK_ENABLED:-true}
 
 Game="kf2"
 DefaultMap="kf-bioticssslab" # Default map
@@ -90,6 +91,7 @@ while test $# -gt 0; do
   esac
 done
 
+if [ "$SYSTEMS_CHECK_ENABLED" = "true" ]; then
 # Check stuff first...
 all_systems_go=$($SERVER_MANAGER_HOME/steam-systems-check)
 
@@ -97,6 +99,7 @@ if [ "$?" != "0" ]; then
   echo "$all_systems_go";
   echo "Systems check failed; check above logs.";
   exit 1;
+fi
 fi
 
 # Run Server
