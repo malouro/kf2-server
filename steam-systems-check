@@ -37,6 +37,9 @@ volume_formatted=$(file -s /dev/$VOLUME_NAME | grep 'XFS filesystem')
 
 # SYSTEMS CHECK
 #====================================
+# sudo ./steam-systems-check seems to be inconsistent?
+echo "NOTE: This may not work as expected when running as super user. Be warned!"
+
 if [ -z device_exists ]; then
   echo "Device not detected: '$VOLUME_NAME'";
   echo "Check that the volume is running and attached to the EC2 instance with the expected name.";
