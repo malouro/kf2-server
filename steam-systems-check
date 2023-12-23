@@ -3,6 +3,8 @@
 # NOTE: This was mainly only useful for my specific AWS EC2 instance setup; with a mounted volume in a specified directory hooked up via symlink to an expected location for Steam installations.
 # This is an optional runtime check used in the server startup to notify if anything is not properly configured or unexpected, and how & where it happens to be the case.
 
+set -e
+
 #====================================
 # Usage:
 #   bash ~/steam-systems-check

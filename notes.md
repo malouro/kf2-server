@@ -14,6 +14,10 @@ This is a quick video tutorial I followed to set things up:
 To debug, check the following:
 
 - **Volume is attached to the EC2 instance.**
+- **Devices exists on the machine.**
+  - Check with `df -h`, and if not there, double-check `lsblk`.
+    - If `sudo file -s /dev/<device>` yields a positive result, we're good!
+    - Otherwise, `mkfs -t xfs /dev/<device>` to set it up. (usually used on a freshly spawned volume)
 - **Systems checks passes.** (see `steam-systems-check` -- which checks for the following:)
   - Device exists, which confirms (1)
   - Volume is formatted for the expected device name
