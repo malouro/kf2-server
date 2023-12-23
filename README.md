@@ -86,6 +86,8 @@ The `start-server` script depends on an existing `maps.txt` file within `$SERVER
 
 The map names need to follow the `KF-<name>` convention that matches the ID of the map. You can find this manually by navigating to `<steam-installation>/kf2server/KFGame/BrewedPC/Maps/<map-name>` and looking for a correspdoning `$MAP_ID.kfm` file (will usually follow the pattern of `KF-<MAP>.kfm`, ie: `KF-BioticsLab.kfm`).
 
+The `maps.txt` file will be automatically update via the `run-update` script in accordance to the `GameMapCycles` configuration in `KFGame.ini`. **Keep that file updated on your own!**
+
 ### Custom Maps
 
 Add the workshop ID into `KFEngine.ini`:
@@ -96,13 +98,16 @@ Add the workshop ID into `KFEngine.ini`:
 ServerSubscribedWorkshopItems=2998243647 ; <-- Add a new item with the workshop ID
 ```
 
-Additionally, the map name needs to be added into `maps.txt` mentioned above.
+Additionally, the map name needs to be added to the `KFGame.ini > [GameMapCycles]` config, as mentioned in the above "Map List" section.
 
 ## Updating
 
 ```bash
 $SERVER_MANAGER_HOME/run-update
 ```
+
+- This will install any new updates/patches for Killing Floor 2 from Steam.
+- Additionally, the `maps.txt` file will be auto-updated according to the existing `GameMapCycles` config for your server.
 
 ## Resources
 
