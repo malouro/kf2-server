@@ -112,4 +112,5 @@ $SERVER_MANAGER_HOME/run-update
 ## Resources
 
 For the official docs, refer to the [Killing Floor 2 Wiki's Dedicated Server Guide](https://wiki.killingfloor2.com/index.php?title=Dedicated_Server_(Killing_Floor_2)).
-Most of the notes here are retranscribed here for brevity and easier referral. There are additional notes in here that are specific to my implementation.
+
+Most of the notes here are retranscribed from there, for brevity and easier referral. There are additional notes here that are specific to my implementation.
